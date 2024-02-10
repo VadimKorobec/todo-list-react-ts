@@ -1,9 +1,11 @@
 import "./App.css";
+import { TodoList } from "./components/TodoList";
 
 export const App = () => {
   return (
     <div className="App">
-      <h1>Hello react</h1>
+      <TodoList title='Movie'/>
     </div>
   );
 };
+
