@@ -1,12 +1,24 @@
-export const TodoList = (props:any) => {
+type TaskType = {
+  id: number;
+  title: string;
+  isDone: boolean;
+};
+
+type PropsType = {
+  title: string;
+  tasks: TaskType[];
+  
+};
+
+export const TodoList = (props: PropsType) => {
   return (
     <div>
-      <h3>What to learn</h3>
+      <h3>{props.title}</h3>
       <div>
         <input type="text" />
         <button type="button">+</button>
       </div>
-      <ul style={{listStyle:'none'}}>
+      <ul style={{ listStyle: "none" }}>
         <li>
           <input type="checkbox" checked={true} />
           <span>CSS&HTML</span>
