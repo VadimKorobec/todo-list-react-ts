@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { FilterValuesType } from "../App";
 
 export type TaskType = {
-  id: number;
+  id: string;
   title: string;
   isDone: boolean;
 };
@@ -9,8 +10,9 @@ export type TaskType = {
 type TodoListProps = {
   title: string;
   tasks: TaskType[];
-  onDelete: (id:number) => void;
+  onDelete: (id: string) => void;
   onFilter: (value: FilterValuesType) => void;
+  addTask: (title: string) => void;
 };
 
 export const TodoList = ({
@@ -18,13 +20,29 @@ export const TodoList = ({
   tasks,
   onDelete,
   onFilter,
+  addTask,
 }: TodoListProps) => {
+  const [value, setValue] = useState<string>("");
+
+  const handleChange = (e: any) => {
+    setValue(e.target.value);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    setValue("");
+  };
+
   return (
     <div>
       <h3>{title}</h3>
       <div>
-        <input type="text" />
-        <button type="button">+</button>
+        <form onSubmit={handleSubmit}>
+          <input type="text" value={value} onChange={handleChange} />
+          <button type="button" onClick={() => addTask(value)}>
+            Add
+          </button>
+        </form>
       </div>
       <ul style={{ listStyle: "none" }}>
         {tasks.map(({ id, title, isDone }) => (
