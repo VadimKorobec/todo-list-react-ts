@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import "./App.css";
 import { TaskType, TodoList } from "./components/TodoList";
 import todos from "./components/todos.json";
-import { Input } from "./components/Input";
+import { Form } from "./components/Form";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -46,7 +46,7 @@ export const App = () => {
         onFilter={handleFilterTasks}
         addTask={handleAddTask}
       />
-      <Input />
+      <Form/>
     </div>
   );
 };
