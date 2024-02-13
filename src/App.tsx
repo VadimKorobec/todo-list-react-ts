@@ -50,6 +50,7 @@ export const App = () => {
         onFilter={handleFilterTasks}
         addTask={handleAddTask}
         onStatus={handleChangeStatus}
+        filter={filter}
       />
     </div>
   );
