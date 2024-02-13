@@ -31,12 +31,12 @@ export const TodoList = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     addTask(value);
-    reset()
+    reset();
   };
 
   const reset = () => {
-    setValue('')
-  }
+    setValue("");
+  };
 
   return (
     <div>

@@ -39,7 +39,7 @@ export const App = () => {
   return (
     <div className="App">
       <TodoList
-        title="Code"
+        title="Tasks"
         tasks={tasksForTodoList}
         onDelete={handleDeleteTask}
         onFilter={handleFilterTasks}
