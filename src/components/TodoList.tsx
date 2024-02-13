@@ -13,6 +13,7 @@ type TodoListProps = {
   onDelete: (id: string) => void;
   onFilter: (value: FilterValuesType) => void;
   addTask: (title: string) => void;
+  onStatus: (id: string, isDone: boolean) => void;
 };
 
 export const TodoList = ({
@@ -21,15 +22,19 @@ export const TodoList = ({
   onDelete,
   onFilter,
   addTask,
+  onStatus,
 }: TodoListProps) => {
   const [value, setValue] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+    setValue(e.target.value.trim());
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (value === "") {
+      return;
+    }
     addTask(value);
     reset();
   };
@@ -50,7 +55,11 @@ export const TodoList = ({
       <ul style={{ listStyle: "none" }}>
         {tasks.map(({ id, title, isDone }) => (
           <li key={id}>
-            <input type="checkbox" checked={isDone} />
+            <input
+              type="checkbox"
+              checked={isDone}
+              onChange={() => onStatus(id, isDone)}
+            />
             <span>{title}</span>
             <button onClick={() => onDelete(id)}>Delete</button>
           </li>

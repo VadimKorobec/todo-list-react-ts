@@ -11,9 +11,6 @@ export const App = () => {
   const [filter, setFilter] = useState<FilterValuesType>("all");
 
   const handleAddTask = (title: string) => {
-    // let newTask = { id: nanoid(), title: "New Task", isDone: false }
-    // let newTasks = [...tasks, newTask]
-    // setTasks(newTasks)
     setTasks((prevState) => [
       ...prevState,
       { id: nanoid(), title, isDone: false },
@@ -36,6 +33,14 @@ export const App = () => {
     tasksForTodoList = tasks.filter((item) => item.isDone === false);
   }
 
+  const handleChangeStatus = (id: string, isDone: boolean) => {
+    let task = tasks.find((item) => item.id === id);
+    if (task) {
+      task.isDone = !isDone;
+    }
+    setTasks([...tasks]);
+  };
+
   return (
     <div className="App">
       <TodoList
@@ -44,6 +49,7 @@ export const App = () => {
         onDelete={handleDeleteTask}
         onFilter={handleFilterTasks}
         addTask={handleAddTask}
+        onStatus={handleChangeStatus}
       />
     </div>
   );
