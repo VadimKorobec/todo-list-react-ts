@@ -24,14 +24,19 @@ export const TodoList = ({
 }: TodoListProps) => {
   const [value, setValue] = useState<string>("");
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setValue("");
+    addTask(value);
+    reset()
   };
+
+  const reset = () => {
+    setValue('')
+  }
 
   return (
     <div>
@@ -39,9 +44,7 @@ export const TodoList = ({
       <div>
         <form onSubmit={handleSubmit}>
           <input type="text" value={value} onChange={handleChange} />
-          <button type="button" onClick={() => addTask(value)}>
-            Add
-          </button>
+          <button type="submit">Add</button>
         </form>
       </div>
       <ul style={{ listStyle: "none" }}>
