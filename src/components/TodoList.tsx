@@ -11,11 +11,12 @@ type TodoListProps = {
   id: string;
   title: string;
   tasks: TaskType[];
-  onDelete: (id: string) => void;
+  onDelete: (id: string, todoListId: string) => void;
   onFilter: (value: FilterValuesType, id: string) => void;
-  addTask: (title: string) => void;
-  onStatus: (id: string, isDone: boolean) => void;
+  addTask: (title: string, todoListId: string) => void;
+  onStatus: (id: string, isDone: boolean, todoListId: string) => void;
   filter: FilterValuesType;
+  removeTodoList: (todoListId: string) => void;
 };
 
 export const TodoList = ({
@@ -27,6 +28,7 @@ export const TodoList = ({
   onFilter,
   addTask,
   onStatus,
+  removeTodoList,
 }: TodoListProps) => {
   const [value, setValue] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
@@ -44,7 +46,7 @@ export const TodoList = ({
       setError(!error);
       return;
     }
-    addTask(value);
+    addTask(value, id);
     reset();
   };
 
@@ -52,9 +54,14 @@ export const TodoList = ({
     setValue("");
   };
 
+  const handleDeleteList = () => {
+   removeTodoList(id)
+  }
+
   return (
     <div>
       <h3>{title}</h3>
+      <button onClick={handleDeleteList}>Delete List</button>
       <div>
         <form onSubmit={handleSubmit}>
           <input
@@ -73,10 +80,10 @@ export const TodoList = ({
             <input
               type="checkbox"
               checked={isDone}
-              onChange={() => onStatus(id, isDone)}
+              onChange={() => onStatus(id, isDone, id)}
             />
             <span>{title}</span>
-            <button onClick={() => onDelete(id)}>Delete</button>
+            <button onClick={() => onDelete(id, id)}>Delete</button>
           </li>
         ))}
       </ul>
