@@ -8,16 +8,18 @@ export type TaskType = {
 };
 
 type TodoListProps = {
+  id: string;
   title: string;
   tasks: TaskType[];
   onDelete: (id: string) => void;
-  onFilter: (value: FilterValuesType) => void;
+  onFilter: (value: FilterValuesType, id: string) => void;
   addTask: (title: string) => void;
   onStatus: (id: string, isDone: boolean) => void;
   filter: FilterValuesType;
 };
 
 export const TodoList = ({
+  id,
   title,
   tasks,
   filter,
@@ -28,7 +30,6 @@ export const TodoList = ({
 }: TodoListProps) => {
   const [value, setValue] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
-  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 0) {
@@ -51,8 +52,6 @@ export const TodoList = ({
     setValue("");
   };
 
-  
-
   return (
     <div>
       <h3>{title}</h3>
@@ -70,7 +69,7 @@ export const TodoList = ({
       </div>
       <ul style={{ listStyle: "none" }}>
         {tasks.map(({ id, title, isDone }) => (
-          <li className={isDone ?'is-done' : ''} key={id}>
+          <li className={isDone ? "is-done" : ""} key={id}>
             <input
               type="checkbox"
               checked={isDone}
@@ -83,20 +82,20 @@ export const TodoList = ({
       </ul>
       <div>
         <button
-          className={filter === 'all' ? "active" : ""}
-          onClick={() => onFilter("all")}
+          className={filter === "all" ? "active" : ""}
+          onClick={() => onFilter("all", id)}
         >
           All
         </button>
         <button
-          className={filter === 'active' ? "active" : ""}
-          onClick={() => onFilter("active")}
+          className={filter === "active" ? "active" : ""}
+          onClick={() => onFilter("active", id)}
         >
           Active
         </button>
         <button
-          className={filter === 'completed' ? "active" : ""}
-          onClick={() => onFilter("completed")}
+          className={filter === "completed" ? "active" : ""}
+          onClick={() => onFilter("completed", id)}
         >
           Completed
         </button>
