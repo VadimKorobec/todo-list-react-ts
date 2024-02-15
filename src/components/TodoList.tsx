@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { FilterValuesType } from "../App";
+import { AddItemForm } from "./AddItemForm";
 
 export type TaskType = {
   id: string;
@@ -30,50 +30,19 @@ export const TodoList = ({
   onStatus,
   removeTodoList,
 }: TodoListProps) => {
-  const [value, setValue] = useState<string>("");
-  const [error, setError] = useState<boolean>(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length > 0) {
-      setError(false);
-    }
-    setValue(e.target.value.trim());
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (value === "") {
-      setError(!error);
-      return;
-    }
-    addTask(value, id);
-    reset();
-  };
-
-  const reset = () => {
-    setValue("");
-  };
-
   const handleDeleteList = () => {
-   removeTodoList(id)
-  }
+    removeTodoList(id);
+  };
+
+  const handleAddTask = (title: string) => {
+    addTask(title, id);
+  };
 
   return (
     <div>
       <h3>{title}</h3>
       <button onClick={handleDeleteList}>Delete List</button>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <input
-            className={error ? "error" : ""}
-            type="text"
-            value={value}
-            onChange={handleChange}
-          />
-          <button type="submit">Add</button>
-          {error && <div className="error-message">Field is required</div>}
-        </form>
-      </div>
+      <AddItemForm addItem={handleAddTask} />
       <ul style={{ listStyle: "none" }}>
         {tasks.map(({ id, title, isDone }) => (
           <li className={isDone ? "is-done" : ""} key={id}>
@@ -82,7 +51,7 @@ export const TodoList = ({
               checked={isDone}
               onChange={() => onStatus(id, isDone, id)}
             />
-            <span>{title}</span>
+            <EditableSpan title={title} />
             <button onClick={() => onDelete(id, id)}>Delete</button>
           </li>
         ))}
@@ -109,4 +78,12 @@ export const TodoList = ({
       </div>
     </div>
   );
+};
+
+type EditableSpanPropsType = {
+  title: string;
+};
+
+export const EditableSpan = ({ title }: EditableSpanPropsType) => {
+  return <span>{title}</span>;
 };
