@@ -13,8 +13,8 @@ type TodoListType = {
 };
 
 type TasksStateType = {
-  [key:string] : TaskType[]
-}
+  [key: string]: TaskType[];
+};
 
 const todoListId1 = nanoid();
 const todoListId2 = nanoid();
@@ -77,22 +77,35 @@ export const App = () => {
     let filteredTodoList = todoLists.filter((item) => item.id !== todoListId);
     setTodoLists(filteredTodoList);
     delete tasksObj[todoListId];
-    setTasksObj({...tasksObj})
+    setTasksObj({ ...tasksObj });
   };
 
   const handleAddTodoList = (title: string) => {
     let todoList: TodoListType = {
       id: nanoid(),
-      filter: 'all',
-      title:title
-    }
+      filter: "all",
+      title: title,
+    };
     setTodoLists([...todoLists, todoList]);
-    setTasksObj({...tasksObj,[todoList.id]:[]})
-  }
+    setTasksObj({ ...tasksObj, [todoList.id]: [] });
+  };
+
+  const handleChangeTaskTitle = (
+    id: string,
+    newTitle: string,
+    todoListId: string
+  ) => {
+    let tasks = tasksObj[todoListId];
+    let task = tasks.find((item) => item.id === id);
+    if (task) {
+      task.title = newTitle;
+      setTasksObj({ ...tasksObj });
+    }
+  };
 
   return (
     <div className="App">
-      <AddItemForm addItem={handleAddTodoList}  />
+      <AddItemForm addItem={handleAddTodoList} />
       {todoLists.map(({ id, title, filter }) => {
         let tasksForTodoList = tasksObj[id];
         if (filter === "completed") {
@@ -117,6 +130,7 @@ export const App = () => {
             onStatus={handleChangeStatus}
             filter={filter}
             removeTodoList={handleRemoveTodoList}
+            changeTaskTitle={handleChangeTaskTitle}
           />
         );
       })}
