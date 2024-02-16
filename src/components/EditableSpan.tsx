@@ -6,19 +6,24 @@ type EditableSpanPropsType = {
 
 export const EditableSpan = ({ title }: EditableSpanPropsType) => {
   const [show, setShow] = useState<boolean>(false);
+  const [newTitle, setNewTitle] = useState<string>('')
+  
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setNewTitle(e.currentTarget.value)
+  }
 
   const handleChangeTitle = () => {
-    setShow(!show);
+    setShow(true);
   };
 
   const handleViewClick = () => {
-   console.log('blur')
+   setShow(false)
   }
 
   return (
     <>
       {show ? (
-        <input value={title} onBlur={handleViewClick} />
+        <input type="text"  value={newTitle} onBlur={handleViewClick} autoFocus onChange={handleChange} />
       ) : (
         <span onDoubleClick={handleChangeTitle}>{title}</span>
       )}
