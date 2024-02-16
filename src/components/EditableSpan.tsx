@@ -8,7 +8,7 @@ export const EditableSpan = ({ title }: EditableSpanPropsType) => {
   const [show, setShow] = useState<boolean>(false);
     return (
         <>
-            {!show ? <span>{title}</span> : <input/>}
+            {!show ? <span onClick={() => setShow(show)}>{title}</span> : <input/>}
         
       </>
     );
