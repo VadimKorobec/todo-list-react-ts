@@ -1,5 +1,6 @@
 import { FilterValuesType } from "../App";
 import { AddItemForm } from "./AddItemForm";
+import { EditableSpan } from "./EditableSpan";
 
 export type TaskType = {
   id: string;
@@ -80,10 +81,4 @@ export const TodoList = ({
   );
 };
 
-type EditableSpanPropsType = {
-  title: string;
-};
 
-export const EditableSpan = ({ title }: EditableSpanPropsType) => {
-  return <span>{title}</span>;
-};
