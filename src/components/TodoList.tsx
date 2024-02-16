@@ -16,6 +16,7 @@ type TodoListProps = {
   onFilter: (value: FilterValuesType, id: string) => void;
   addTask: (title: string, todoListId: string) => void;
   onStatus: (id: string, isDone: boolean, todoListId: string) => void;
+  changeTaskTitle: (id: string, newTitle: string, todoListId: string) => void;
   filter: FilterValuesType;
   removeTodoList: (todoListId: string) => void;
 };
@@ -30,6 +31,7 @@ export const TodoList = ({
   addTask,
   onStatus,
   removeTodoList,
+  changeTaskTitle,
 }: TodoListProps) => {
   const handleDeleteList = () => {
     removeTodoList(id);
@@ -38,6 +40,10 @@ export const TodoList = ({
   const handleAddTask = (title: string) => {
     addTask(title, id);
   };
+
+  const handleChengeTask = (newValue: string) => {
+    changeTaskTitle(id,newValue,id)
+  }
 
   return (
     <div>
@@ -52,7 +58,7 @@ export const TodoList = ({
               checked={isDone}
               onChange={() => onStatus(id, isDone, id)}
             />
-            <EditableSpan title={title} />
+            <EditableSpan title={title} onChange={handleChengeTask} />
             <button onClick={() => onDelete(id, id)}>Delete</button>
           </li>
         ))}
