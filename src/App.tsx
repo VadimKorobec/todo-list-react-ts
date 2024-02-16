@@ -103,6 +103,16 @@ export const App = () => {
     }
   };
 
+  const handleChangeTodoListTitle = (id: string, newTitle: string) => {
+    let todoList = todoLists.find(item => item.id === id)
+    if (todoList) {
+      todoList.title = newTitle;
+       setTodoLists([...todoLists]);
+    }
+   
+
+  };
+
   return (
     <div className="App">
       <AddItemForm addItem={handleAddTodoList} />
@@ -131,6 +141,7 @@ export const App = () => {
             filter={filter}
             removeTodoList={handleRemoveTodoList}
             changeTaskTitle={handleChangeTaskTitle}
+            changeTodoListTitle={handleChangeTodoListTitle}
           />
         );
       })}
