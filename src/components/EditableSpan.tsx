@@ -1,7 +1,16 @@
+import { useState } from "react";
+
 type EditableSpanPropsType = {
   title: string;
 };
 
 export const EditableSpan = ({ title }: EditableSpanPropsType) => {
-  return <span>{title}</span>;
+  const [show, setShow] = useState<boolean>(false);
+    return (
+        <>
+            {!show ? <span>{title}</span> : <input/>}
+        
+      </>
+    );
+  
 };
