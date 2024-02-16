@@ -52,7 +52,7 @@ export const TodoList = ({
               checked={isDone}
               onChange={() => onStatus(id, isDone, id)}
             />
-            <EditableSpan title={title} />
+            <EditableSpan title={title} editMode ={true} />
             <button onClick={() => onDelete(id, id)}>Delete</button>
           </li>
         ))}
