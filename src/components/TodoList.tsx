@@ -1,6 +1,9 @@
+import { Button, Checkbox } from "@mui/material";
 import { FilterValuesType } from "../App";
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { CheckBox } from "@mui/icons-material";
 
 export type TaskType = {
   id: string;
@@ -55,44 +58,61 @@ export const TodoList = ({
     <div>
       <h3>
         <EditableSpan title={title} onChange={handleChangeTodoListTitle} />
+        <Button
+          size="small"
+          color="error"
+          variant="contained"
+          startIcon={<DeleteIcon />}
+          onClick={handleDeleteList}
+        >
+          Delete List
+        </Button>
       </h3>
-      <button onClick={handleDeleteList}>Delete List</button>
+
       <AddItemForm addItem={handleAddTask} />
       <ul style={{ listStyle: "none" }}>
         {tasks.map(({ id, title, isDone }) => (
           <li className={isDone ? "is-done" : ""} key={id}>
-            <input
-              type="checkbox"
+            <Checkbox
               checked={isDone}
               onChange={() => onStatus(id, isDone, id)}
             />
             <EditableSpan title={title} onChange={handleChengeTask} />
-            <button onClick={() => onDelete(id, id)}>Delete</button>
+            <Button
+              size="small"
+              color="error"
+              variant="contained"
+              startIcon={<DeleteIcon />}
+              onClick={() => onDelete(id, id)}
+            >
+              Delete
+            </Button>
           </li>
         ))}
       </ul>
-      <div>
-        <button
+      <div style={{ gap: "5px", display: "flex" }}>
+        <Button
+          variant={"contained"}
           className={filter === "all" ? "active" : ""}
           onClick={() => onFilter("all", id)}
         >
           All
-        </button>
-        <button
+        </Button>
+        <Button
+          variant={"contained"}
           className={filter === "active" ? "active" : ""}
           onClick={() => onFilter("active", id)}
         >
           Active
-        </button>
-        <button
+        </Button>
+        <Button
+          variant={"contained"}
           className={filter === "completed" ? "active" : ""}
           onClick={() => onFilter("completed", id)}
         >
           Completed
-        </button>
+        </Button>
       </div>
     </div>
   );
 };
-
-
