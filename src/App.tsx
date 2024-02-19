@@ -3,7 +3,16 @@ import { nanoid } from "nanoid";
 import "./App.css";
 import { TaskType, TodoList } from "./components/TodoList";
 import { AddItemForm } from "./components/AddItemForm";
-import { AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  Paper,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -106,13 +115,11 @@ export const App = () => {
   };
 
   const handleChangeTodoListTitle = (id: string, newTitle: string) => {
-    let todoList = todoLists.find(item => item.id === id)
+    let todoList = todoLists.find((item) => item.id === id);
     if (todoList) {
       todoList.title = newTitle;
-       setTodoLists([...todoLists]);
+      setTodoLists([...todoLists]);
     }
-   
-
   };
 
   return (
@@ -135,7 +142,7 @@ export const App = () => {
         </Toolbar>
       </AppBar>
       <Container fixed>
-        <Grid container style={{padding:'30px'}}>
+        <Grid container style={{ padding: "30px" }}>
           <AddItemForm addItem={handleAddTodoList} />
         </Grid>
         <Grid container spacing={10}>
@@ -152,8 +159,8 @@ export const App = () => {
               );
             }
             return (
-              <Grid item>
-                <Paper elevation={3} style={{padding:'20px'}}>
+              <Grid key={id} item>
+                <Paper elevation={3} style={{ padding: "20px" }}>
                   <TodoList
                     key={id}
                     id={id}
