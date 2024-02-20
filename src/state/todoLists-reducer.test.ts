@@ -3,6 +3,7 @@ import {
   ChangeTodoListTitleAC,
   RemoveTodoListAC,
   todoListsReducer,
+  ChangeTodoListFilterAC,
 } from "./todoLists-reducer";
 import { FilterValuesType, TodoListType } from "../App";
 import { nanoid } from "nanoid";
@@ -74,11 +75,7 @@ test("correct filter of todoList should be changed", () => {
     { id: todoListId2, title: "Boba", filter: "all" },
   ];
 
-  const action = {
-    type: "CHANGE-TODOLIST-FILTER" as const,
-    id: todoListId2,
-    filter: newFilter,
-  };
+  const action = ChangeTodoListFilterAC(todoListId2, newFilter);
 
   const endState = todoListsReducer(startState, action);
 
