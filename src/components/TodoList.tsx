@@ -3,7 +3,7 @@ import { FilterValuesType } from "../App";
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { CheckBox } from "@mui/icons-material";
+
 
 export type TaskType = {
   id: string;
