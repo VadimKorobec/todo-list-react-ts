@@ -1,37 +1,58 @@
+
+import { nanoid } from "nanoid";
 import { TasksStateType } from "../App";
 
-export type ActionType1 = {
-  type: "1";
-  id: string;
+export type RemoveTaskActionType = {
+  type: "REMOVE-TASK";
+  todoListId: string;
+  taskId: string;
 };
 
-export type ActionType2 = {
-  type: "2";
+export type AddTaskActionType = {
+  type: "ADD-TASK";
   title: string;
+  todoListId: string;
 };
 
-type ActionsType = ActionType1 | ActionType2;
+type ActionsType = RemoveTaskActionType | AddTaskActionType;
 
 export const tasksReducer = (
   state: TasksStateType,
   action: ActionsType
 ): TasksStateType => {
   switch (action.type) {
-    case "1": {
-      return { ...state };
+    case "REMOVE-TASK": {
+      const stateCopy = { ...state };
+      const tasks = state[action.todoListId];
+      let newTasks = tasks.filter((item) => item.id !== action.taskId);
+      stateCopy[action.todoListId] = newTasks;
+      return stateCopy;
     }
-    case "2": {
-      return { ...state };
+    case "ADD-TASK": {
+      const stateCopy = { ...state };
+      const tasks = state[action.todoListId];
+      let newTasks = [
+        ...tasks,
+        { id: nanoid(), title: action.title, isDone: false },
+      ];
+      stateCopy[action.todoListId] = newTasks;
+      return stateCopy;
     }
     default:
       throw new Error("I don't know, sorry");
   }
 };
 
-export const action1AC = (todoListId: string): ActionType1 => {
-  return { type: "1", id: todoListId };
+export const removeTaskAC = (
+  taskId: string,
+  todoListId: string
+): RemoveTaskActionType => {
+  return { type: "REMOVE-TASK", todoListId, taskId };
 };
 
-export const action2AC = (newTitle: string): ActionType2 => {
-  return { type: "2", title: newTitle };
+export const addTaskAC = (
+  title: string,
+  todoListId: string
+): AddTaskActionType => {
+  return { type: "ADD-TASK", title, todoListId };
 };
