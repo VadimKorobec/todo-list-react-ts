@@ -4,7 +4,6 @@ import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-
 export type TaskType = {
   id: string;
   title: string;
