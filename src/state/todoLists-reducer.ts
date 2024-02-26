@@ -30,8 +30,16 @@ type ActionsType =
   | ChangeTodoListFilterActionType
   | ChangeTodoListTitleActionType;
 
+ export let todoListId1 = nanoid();
+export let todoListId2 = nanoid();
+
+const initialState: TodoListType[] = [
+  { id: todoListId1, title: "What to learn", filter: "all" },
+  { id: todoListId2, title: "What to buy", filter: "all" },
+];
+
 export const todoListsReducer = (
-  state: TodoListType[],
+  state: TodoListType[] = initialState,
   action: ActionsType
 ): TodoListType[] => {
   switch (action.type) {
@@ -39,7 +47,10 @@ export const todoListsReducer = (
       return state.filter((item) => item.id !== action.id);
     }
     case "ADD-TODOLIST": {
-      return [...state, { id: action.todoListId, title: action.title, filter: "all" }];
+      return [
+        ...state,
+        { id: action.todoListId, title: action.title, filter: "all" },
+      ];
     }
     case "CHANGE-TODOLIST-TITLE": {
       const todoList = state.find((item) => item.id === action.id);
@@ -57,7 +68,7 @@ export const todoListsReducer = (
     }
 
     default:
-      throw new Error("I don't know, sorry");
+      return state;
   }
 };
 
@@ -68,7 +79,7 @@ export const RemoveTodoListAC = (
 };
 
 export const AddTodoListAC = (title: string): AddTodoListActionType => {
-  return { type: "ADD-TODOLIST", title, todoListId:nanoid()};
+  return { type: "ADD-TODOLIST", title, todoListId: nanoid() };
 };
 
 export const ChangeTodoListTitleAC = (
@@ -82,5 +93,5 @@ export const ChangeTodoListFilterAC = (
   id: string,
   filter: FilterValuesType
 ): ChangeTodoListFilterActionType => {
-  return { type: 'CHANGE-TODOLIST-FILTER',id:id,filter:filter};
+  return { type: "CHANGE-TODOLIST-FILTER", id: id, filter: filter };
 };

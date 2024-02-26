@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { nanoid } from "nanoid";
 import "./App.css";
 import { TaskType, TodoList } from "./components/TodoList";
@@ -14,6 +14,21 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useDispatch } from "react-redux";
+import {
+  addTaskAC,
+  changeTaskStatusAC,
+  changeTaskTitleAC,
+  removeTaskAC,
+} from "./state/tasks-reducer";
+import {
+  AddTodoListAC,
+  ChangeTodoListFilterAC,
+  ChangeTodoListTitleAC,
+  RemoveTodoListAC,
+} from "./state/todoLists-reducer";
+import { useSelector } from "react-redux";
+import { AppRootState } from "./state/store";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -27,48 +42,28 @@ export type TasksStateType = {
   [key: string]: TaskType[];
 };
 
-const todoListId1 = nanoid();
-const todoListId2 = nanoid();
-
 export const AppWithRedux = () => {
-  const [tasksObj, setTasksObj] = useState<TasksStateType>({
-    [todoListId1]: [
-      { id: "1", title: "CSS&HTML", isDone: false },
-      { id: "2", title: "JS", isDone: false },
-      { id: "3", title: "React", isDone: false },
-      { id: "4", title: "Redux", isDone: false },
-    ],
-    [todoListId2]: [
-      { id: "1", title: "Milk", isDone: false },
-      { id: "2", title: "Bread", isDone: false },
-    ],
-  });
-  const [todoLists, setTodoLists] = useState<TodoListType[]>([
-    { id: todoListId1, title: "Biba", filter: "all" },
-    { id: todoListId2, title: "Boba", filter: "all" },
-  ]);
+  const todoLists = useSelector<AppRootState, TodoListType[]>(
+    (state) => state.todoLists
+  );
+  const tasks = useSelector<AppRootState, TasksStateType>(
+    (state) => state.tasks
+  );
+  
+  const dispath = useDispatch();
 
   const handleAddTask = (title: string, todoListId: string) => {
-    let task = { id: nanoid(), title, isDone: false };
-    let tasks = tasksObj[todoListId];
-    let newTasks = [...tasks, task];
-    tasksObj[todoListId] = newTasks;
-    setTasksObj({ ...tasksObj });
+    const action = addTaskAC(title, todoListId);
+    dispath(action);
   };
 
   const handleDeleteTask = (id: string, todoListId: string) => {
-    let tasks = tasksObj[todoListId];
-    let filteredTasks = tasks.filter((item) => item.id !== id);
-    tasksObj[todoListId] = filteredTasks;
-    setTasksObj({ ...tasksObj });
+    const action = removeTaskAC(id, todoListId);
+    dispath(action);
   };
 
   const handleFilterTasks = (value: FilterValuesType, id: string) => {
-    let todoList = todoLists.find((item) => item.id === id);
-    if (todoList) {
-      todoList.filter = value;
-      setTodoLists((prevState) => [...prevState]);
-    }
+    dispath(ChangeTodoListFilterAC(id, value));
   };
 
   const handleChangeStatus = (
@@ -76,29 +71,18 @@ export const AppWithRedux = () => {
     isDone: boolean,
     todoListId: string
   ) => {
-    let tasks = tasksObj[todoListId];
-    let task = tasks.find((item) => item.id === id);
-    if (task) {
-      task.isDone = !isDone;
-      setTasksObj({ ...tasksObj });
-    }
+    const action = changeTaskStatusAC(id, todoListId, isDone);
+    dispath(action);
   };
 
   const handleRemoveTodoList = (todoListId: string) => {
-    let filteredTodoList = todoLists.filter((item) => item.id !== todoListId);
-    setTodoLists(filteredTodoList);
-    delete tasksObj[todoListId];
-    setTasksObj({ ...tasksObj });
+    const action = RemoveTodoListAC(todoListId);
+    dispath(action);
   };
 
   const handleAddTodoList = (title: string) => {
-    let todoList: TodoListType = {
-      id: nanoid(),
-      filter: "all",
-      title: title,
-    };
-    setTodoLists([...todoLists, todoList]);
-    setTasksObj({ ...tasksObj, [todoList.id]: [] });
+    const action = AddTodoListAC(title);
+    dispath(action);
   };
 
   const handleChangeTaskTitle = (
@@ -106,20 +90,12 @@ export const AppWithRedux = () => {
     newTitle: string,
     todoListId: string
   ) => {
-    let tasks = tasksObj[todoListId];
-    let task = tasks.find((item) => item.id === id);
-    if (task) {
-      task.title = newTitle;
-      setTasksObj({ ...tasksObj });
-    }
+    dispath(changeTaskTitleAC(id, newTitle, todoListId));
   };
 
   const handleChangeTodoListTitle = (id: string, newTitle: string) => {
-    let todoList = todoLists.find((item) => item.id === id);
-    if (todoList) {
-      todoList.title = newTitle;
-      setTodoLists([...todoLists]);
-    }
+    const action = ChangeTodoListTitleAC(id, newTitle);
+    dispath(action);
   };
 
   return (
@@ -147,7 +123,7 @@ export const AppWithRedux = () => {
         </Grid>
         <Grid container spacing={10}>
           {todoLists.map(({ id, title, filter }) => {
-            let tasksForTodoList = tasksObj[id];
+            let tasksForTodoList = tasks[id];
             if (filter === "completed") {
               tasksForTodoList = tasksForTodoList.filter(
                 (item) => item.isDone === true
